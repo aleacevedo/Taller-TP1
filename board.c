@@ -10,12 +10,11 @@ int board_init(board_t *self)
   if (fileBoard == NULL)
     return -2;
   while (fgets(line, LEN_STRING + 1, fileBoard) != NULL) {
-    printf("LINEA: %s\n", line);
+    // printf("LINEA: %s", line);
     if (row > 8) {
       fclose(fileBoard);
       return -1;  // El archivo tiene mas de 9 filas
     }
-    printf("DEBUG\n");
     for (int column = 0; column < 9; column++) {
       if (line[column] == '0') {
         self[row][column]->value = ' ';
@@ -24,7 +23,6 @@ int board_init(board_t *self)
       self[row][column]->value = line[column];
       self[row][column]->ini = 1;
     }
-    printf("DEBUG\n");
     row++;
   }
   return fclose(fileBoard);

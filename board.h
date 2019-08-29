@@ -4,8 +4,7 @@
 #define PATH_BOARD "./board.txt"
 #define LEN_STRING 10
 
-typedef struct
-{
+typedef struct {
   char value;
   int ini;
 } cell_t;
