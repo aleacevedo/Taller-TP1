@@ -3,9 +3,8 @@
 #include <string.h>
 #include "board.h"
 
-int sudoku_init(sudoku_t *self)
-{
-  return board_init(&(self->board));
+int sudoku_init(sudoku_t *self) {
+  return board_init(self->board);
 }
 
 char *sudoku_show(sudoku_t *self, char *boardRepresentation) {
@@ -16,9 +15,9 @@ char *sudoku_show(sudoku_t *self, char *boardRepresentation) {
       snprintf(boardRepresentation + strlen(boardRepresentation), BOARD_REPRESENTATION_LEN - strlen(boardRepresentation), "%s", ROW_DIVISOR);
     }
     for (int column = 0; column < 9; column = column + 3) {
-      char valor0 = board_get(&(self->board), row, column);
-      char valor1 = board_get(&(self->board), row, column + 1);
-      char valor2 = board_get(&(self->board), row, column + 2);
+      char valor0 = board_get(self->board, row, column);
+      char valor1 = board_get(self->board, row, column + 1);
+      char valor2 = board_get(self->board, row, column + 2);
       snprintf(boardRepresentation + strlen(boardRepresentation), BOARD_REPRESENTATION_LEN - strlen(boardRepresentation), CELL_REPRESENTATION, valor0, valor1, valor2);
     }
     snprintf(boardRepresentation + strlen(boardRepresentation), BOARD_REPRESENTATION_LEN - strlen(boardRepresentation), "%s", "U\n");

@@ -10,7 +10,7 @@
 
 typedef struct
 {
-  board_t board;
+  board_t *board;
   int valid;
 } sudoku_t;
 
