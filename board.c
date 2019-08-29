@@ -6,32 +6,26 @@ int board_init(board_t *self)
 {
   FILE *fileBoard = fopen(PATH_BOARD, "r");
   int row = 0;
-  char line[LEN_STRING + 1];
+  char line[LEN_STRING + 2];
   if (fileBoard == NULL)
     return -2;
-  while (fgets(line, LEN_STRING + 1, fileBoard) != NULL)
-  {
+  while (fgets(line, LEN_STRING + 1, fileBoard) != NULL) {
     printf("LINEA: %s\n", line);
-    if (row > 8)
-    {
+    if (row > 8) {
       fclose(fileBoard);
-      return -1; // El archivo tiene mas de 9 filas
+      return -1;  // El archivo tiene mas de 9 filas
     }
-    for (int column = 0; column < 9; column++)
-    {
-      if (line[column] == '0')
-      {
+    printf("DEBUG\n");
+    for (int column = 0; column < 9; column++) {
+      if (line[column] == '0') {
         self[row][column]->value = ' ';
         continue;
       }
       self[row][column]->value = line[column];
       self[row][column]->ini = 1;
     }
+    printf("DEBUG\n");
     row++;
-    if (fgets(line, LEN_STRING + 1, fileBoard) == NULL)
-    {
-      break;
-    }
   }
   return fclose(fileBoard);
 }
