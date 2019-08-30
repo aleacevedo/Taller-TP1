@@ -28,10 +28,6 @@ int board_init(board_t *self)
       self[row][column]->ini = 1;
     }
     row++;
-    if (fgets(line, LEN_STRING + 1, fileBoard) == NULL)
-    {
-      break;
-    }
   }
   return fclose(fileBoard);
 }
