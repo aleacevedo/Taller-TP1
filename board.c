@@ -17,11 +17,11 @@ int board_init(board_t *self)
     }
     for (int column = 0; column < 9; column++) {
       if (line[column] == '0') {
-        self[row][column]->value = ' ';
+        (*self)[row][column].value = ' ';
         continue;
       }
-      self[row][column]->value = line[column];
-      self[row][column]->ini = 1;
+      (*self)[row][column].value = line[column];
+      (*self)[row][column].ini = 1;
     }
     row++;
   }
