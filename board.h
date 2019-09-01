@@ -3,6 +3,7 @@
 
 #define PATH_BOARD "./board.txt"
 #define LEN_STRING 10
+#define BOARD_SIZE 9
 
 typedef struct {
   char value;
@@ -16,7 +17,9 @@ typedef struct {
 
 int board_init(board_t *self);
 
-int board_set(board_t *self, int row, int column, int value);
+int board_set(board_t *self, int row, int column, char value);
+
+int board_is_ini(board_t *self, int row, int column);
 
 char board_get(board_t *self, int row, int column);
 
