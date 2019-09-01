@@ -9,7 +9,10 @@ typedef struct {
   int ini;
 } cell_t;
 
-typedef cell_t board_t[9][9];
+typedef struct {
+  cell_t cells[9][9];
+} board_t;
+
 
 int board_init(board_t *self);
 

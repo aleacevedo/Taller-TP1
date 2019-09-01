@@ -9,19 +9,23 @@ int board_init(board_t *self)
   char line[LEN_STRING + 2];
   if (fileBoard == NULL)
     return -2;
-  while (fgets(line, LEN_STRING + 1, fileBoard) != NULL) {
+  while (fgets(line, LEN_STRING + 1, fileBoard) != NULL)
+  {
     // printf("LINEA: %s", line);
-    if (row > 8) {
+    if (row > 8)
+    {
       fclose(fileBoard);
-      return -1;  // El archivo tiene mas de 9 filas
+      return -1; // El archivo tiene mas de 9 filas
     }
-    for (int column = 0; column < 9; column++) {
-      if (line[column] == '0') {
-        (*self)[row][column].value = ' ';
+    for (int column = 0; column < 9; column++)
+    {
+      if (line[column] == '0')
+      {
+        self->cells[row][column].value = ' ';
         continue;
       }
-      (*self)[row][column].value = line[column];
-      (*self)[row][column].ini = 1;
+      self->cells[row][column].value = line[column];
+      self->cells[row][column].ini = 1;
     }
     row++;
   }
@@ -35,7 +39,7 @@ int board_set(board_t *self, int row, int column, int value)
 
 char board_get(board_t *self, int row, int column)
 {
-  return self[row][column]->value;
+  return self->cells[row][column].value;
 }
 
 int board_reset(board_t *self)
