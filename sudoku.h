@@ -24,6 +24,8 @@ int sudoku_init(sudoku_t *self);
 
 int sudoku_set(sudoku_t *self, char row, char column, char value);
 
+int sudoku_check_value(char value);
+
 char *sudoku_show(sudoku_t *self, char *boardRepresentation);
 
 int sudoku_validate(sudoku_t *self);

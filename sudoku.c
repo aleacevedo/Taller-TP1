@@ -35,7 +35,7 @@ char *sudoku_show(sudoku_t *self, char *boardRepresentation) {
 int sudoku_set(sudoku_t *self, char row, char column, char value) {
   int row_int = atoi(&row) - 1;
   int column_int = atoi(&row) -1;
-  if(!board_is_ini(self->board, row_int, column_int)){
+  if(!board_is_ini(self->board, row_int, column_int) && sudoku_check_value(value)){
     board_set(self->board, row_int, column_int, value);
     play_t *play = malloc(sizeof(play_t));
     play->column = column;
@@ -45,6 +45,11 @@ int sudoku_set(sudoku_t *self, char row, char column, char value) {
     return 0;
   }
   return 1;
+}
+
+int sudoku_check_value(char value) {
+  int value_int  = atoi(&value);
+  return value_int > 0 && value_int < 10;
 }
 
 int sudoku_validate(sudoku_t *self) {

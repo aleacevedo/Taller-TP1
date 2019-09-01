@@ -14,12 +14,14 @@ void list_append(list_t *self, void *value){
   newNode->value = value;
   newNode->next = NULL;
   self->len++;
-  if(self->len == 0){
+  if(self->len == 1){
     self->head = newNode;
     self->iter = newNode;
+    self->tail = newNode;
     return;
   } 
   self->tail->next = newNode;
+  self->tail = newNode;
   return;
 }
 

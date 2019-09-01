@@ -17,6 +17,10 @@ void server_init(const char *service) {
   boardRepresentation[0] = '\0';
   sudoku_show(&sudoku, boardRepresentation);
   printf("%s \n", boardRepresentation);
+  sudoku_set(&sudoku, '1','1','0');
+  boardRepresentation[0] = '\0';
+  sudoku_show(&sudoku, boardRepresentation);
+  printf("%s \n", boardRepresentation);
   sudoku_reset(&sudoku);
   boardRepresentation[0] = '\0';
   sudoku_show(&sudoku, boardRepresentation);
