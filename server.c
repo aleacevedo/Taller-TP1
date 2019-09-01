@@ -13,4 +13,13 @@ void server_init(const char *service) {
   printf("Levanto un server en el puerto: %s \n", service);
   sudoku_show(&sudoku, boardRepresentation);
   printf("%s \n", boardRepresentation);
+  sudoku_set(&sudoku, '1','1','5');
+  boardRepresentation[0] = '\0';
+  sudoku_show(&sudoku, boardRepresentation);
+  printf("%s \n", boardRepresentation);
+  sudoku_reset(&sudoku);
+  boardRepresentation[0] = '\0';
+  sudoku_show(&sudoku, boardRepresentation);
+  printf("%s \n", boardRepresentation);
+  sudoku_uninit(&sudoku);
 }

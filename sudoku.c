@@ -1,10 +1,14 @@
 #include "sudoku.h"
 #include <stdio.h>
 #include <string.h>
+#include <stdlib.h>
 #include "board.h"
 
 int sudoku_init(sudoku_t *self) {
-  return board_init(self->board);
+  board_init(self->board);
+  self->plays= malloc(sizeof(list_t));
+  list_init(self->plays);
+  return 0;
 }
 
 char *sudoku_show(sudoku_t *self, char *boardRepresentation) {
@@ -28,8 +32,19 @@ char *sudoku_show(sudoku_t *self, char *boardRepresentation) {
   return boardRepresentation;
 }
 
-int sudoku_set(sudoku_t *self, int row, int column, int value) {
-  return 0;
+int sudoku_set(sudoku_t *self, char row, char column, char value) {
+  int row_int = atoi(&row) - 1;
+  int column_int = atoi(&row) -1;
+  if(!board_is_ini(self->board, row_int, column_int)){
+    board_set(self->board, row_int, column_int, value);
+    play_t *play = malloc(sizeof(play_t));
+    play->column = column;
+    play->row = row;
+    play->value = value;
+    list_append(self->plays, play);
+    return 0;
+  }
+  return 1;
 }
 
 int sudoku_validate(sudoku_t *self) {
@@ -37,5 +52,14 @@ int sudoku_validate(sudoku_t *self) {
 }
 
 int sudoku_reset(sudoku_t *self) {
+  board_reset(self->board);
   return 0;
+}
+
+void sudoku_uninit(sudoku_t *self) {
+  play_t *play = list_iter_next(self->plays);
+  for(;play != NULL; play = list_iter_next(self->plays)){
+    free(play);
+  }
+  free(self->plays);
 }
