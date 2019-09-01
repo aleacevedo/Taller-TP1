@@ -9,10 +9,8 @@ void server_init(const char *service) {
   sudoku_t sudoku;
   board_t board;
   sudoku.board = &board;
-  //sudoku.board = malloc(sizeof(board_t));
   sudoku_init(&sudoku);
   printf("Levanto un server en el puerto: %s \n", service);
   sudoku_show(&sudoku, boardRepresentation);
   printf("%s \n", boardRepresentation);
-  //free(sudoku.board);
 }
