@@ -6,7 +6,7 @@
 #define SECTOR_DIVISOR "U===========U===========U===========U\n"
 #define ROW_DIVISOR "U---+---+---U---+---+---U---+---+---U\n"
 #define BOARD_REPRESENTATION_LEN 722
-#define CELL_REPRESENTATION "U %c | %c | %c "
+#define ROW_REPRESENTATION "U %c | %c | %c "
 
 typedef struct
 {

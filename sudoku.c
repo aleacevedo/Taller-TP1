@@ -10,19 +10,21 @@ int sudoku_init(sudoku_t *self) {
 char *sudoku_show(sudoku_t *self, char *boardRepresentation) {
   for (int row = 0; row < 9; row++) {
     if (row % 3 == 0) {
-      snprintf(boardRepresentation + strlen(boardRepresentation), BOARD_REPRESENTATION_LEN - strlen(boardRepresentation), "%s", SECTOR_DIVISOR);
+      strcat(boardRepresentation, SECTOR_DIVISOR);
     } else {
-      snprintf(boardRepresentation + strlen(boardRepresentation), BOARD_REPRESENTATION_LEN - strlen(boardRepresentation), "%s", ROW_DIVISOR);
+      strcat(boardRepresentation, ROW_DIVISOR);
     }
     for (int column = 0; column < 9; column = column + 3) {
       char valor0 = board_get(self->board, row, column);
       char valor1 = board_get(self->board, row, column + 1);
       char valor2 = board_get(self->board, row, column + 2);
-      snprintf(boardRepresentation + strlen(boardRepresentation), BOARD_REPRESENTATION_LEN - strlen(boardRepresentation), CELL_REPRESENTATION, valor0, valor1, valor2);
+      char row[13] = "\0";
+      snprintf(row, 13, ROW_REPRESENTATION, valor0, valor1, valor2);
+      strcat(boardRepresentation, row);
     }
-    snprintf(boardRepresentation + strlen(boardRepresentation), BOARD_REPRESENTATION_LEN - strlen(boardRepresentation), "%s", "U\n");
+    strcat(boardRepresentation, "U\n");
   }
-  snprintf(boardRepresentation + strlen(boardRepresentation), BOARD_REPRESENTATION_LEN - strlen(boardRepresentation), "%s", SECTOR_DIVISOR);
+  strcat(boardRepresentation, SECTOR_DIVISOR);
   return boardRepresentation;
 }
 
