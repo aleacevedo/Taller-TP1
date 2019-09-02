@@ -19,8 +19,8 @@ void server_init(const char *service) {
   boardRepresentation[0] = '\0';
   sudoku_show(&sudoku, boardRepresentation);
   printf("%s \n", boardRepresentation);
-  valid = sudoku_validate(&sudoku);
-  printf("El juego es %s \n", valid ? "valido" : "no valido");
+  bool valid1 = sudoku_validate(&sudoku);
+  printf("El juego es %s \n", valid1? "valido" : "no valido");
   sudoku_set(&sudoku, '1','1','9');
   boardRepresentation[0] = '\0';
   sudoku_show(&sudoku, boardRepresentation);

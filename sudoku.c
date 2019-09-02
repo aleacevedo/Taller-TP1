@@ -42,8 +42,8 @@ int sudoku_set(sudoku_t *self, char row, char column, char value) {
   if(!board_is_ini(self->board, row_int, column_int) && sudoku_check_value(value)){
     board_set(self->board, row_int, column_int, value);
     play_t *play = malloc(sizeof(play_t));
-    play->column = column;
-    play->row = row;
+    play->column = column_int;
+    play->row = row_int;
     list_append(self->plays, play);
     return 0;
   }
@@ -96,7 +96,6 @@ bool sudoku_validate(sudoku_t *self) {
   list_iter_reset(self->plays);
   play_t *play = list_iter_next(self->plays);
   for (; play != NULL; play = list_iter_next(self->plays)) {
-    printf("VALIDATE 1");
     char value = board_get(self->board, play->row, play->column);
     bool column = validate_column(self, play->row, value);
     bool row = validate_row(self, play->column, value);
