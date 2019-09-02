@@ -115,6 +115,7 @@ int sudoku_reset(sudoku_t *self) {
 }
 
 void sudoku_uninit(sudoku_t *self) {
+  list_iter_reset(self->plays);
   play_t *play = list_iter_next(self->plays);
   for(;play != NULL; play = list_iter_next(self->plays)){
     free(play);
