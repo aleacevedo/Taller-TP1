@@ -55,7 +55,7 @@ int sudoku_check_value(char value) {
   return value_int > 0 && value_int < 10;
 }
 
-bool validate_column(sudoku_t *self, int column, char value){
+bool validate_row(sudoku_t *self, int column, char value){
   int apariciones = 0;
   for(int row = 0; row < BOARD_SIZE; row++){
     if(board_get(self->board, row, column) == value){
@@ -66,7 +66,7 @@ bool validate_column(sudoku_t *self, int column, char value){
   return true;
 }
 
-bool validate_row(sudoku_t *self, int row, char value){
+bool validate_column(sudoku_t *self, int row, char value){
   int apariciones = 0;
   for(int column = 0; column < BOARD_SIZE; column++){
     if(board_get(self->board, row, column) == value){
@@ -98,9 +98,9 @@ bool sudoku_validate(sudoku_t *self) {
   for (; play != NULL; play = list_iter_next(self->plays)) {
     printf("VALIDATE 1");
     char value = board_get(self->board, play->row, play->column);
-    bool column = validate_column(self, play->column, value);
-    bool row = validate_column(self, play->row, value);
-    bool sector = validate_column(self, play->row, value);
+    bool column = validate_column(self, play->row, value);
+    bool row = validate_row(self, play->column, value);
+    bool sector = validate_sector(self, play->row, play->column, value);
     if(!row || !column || !sector){
       return false;
     }
