@@ -119,5 +119,6 @@ void sudoku_uninit(sudoku_t *self) {
   for(;play != NULL; play = list_iter_next(self->plays)){
     free(play);
   }
+  list_uninit(self->plays);
   free(self->plays);
 }
