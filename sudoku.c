@@ -2,6 +2,7 @@
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
+#include <stdbool.h>
 #include "board.h"
 
 int sudoku_init(sudoku_t *self) {
@@ -43,7 +44,6 @@ int sudoku_set(sudoku_t *self, char row, char column, char value) {
     play_t *play = malloc(sizeof(play_t));
     play->column = column;
     play->row = row;
-    play->value = value;
     list_append(self->plays, play);
     return 0;
   }
@@ -55,9 +55,60 @@ int sudoku_check_value(char value) {
   return value_int > 0 && value_int < 10;
 }
 
-int sudoku_validate(sudoku_t *self) {
-  return 0;
+bool validate_column(sudoku_t *self, int column, char value){
+  int apariciones = 0;
+  for(int row = 0; row < BOARD_SIZE; row++){
+    if(board_get(self->board, row, column) == value){
+      apariciones++;
+      if(apariciones == 2) return false;
+    }
+  }
+  return true;
 }
+
+bool validate_row(sudoku_t *self, int row, char value){
+  int apariciones = 0;
+  for(int column = 0; column < BOARD_SIZE; column++){
+    if(board_get(self->board, row, column) == value){
+      apariciones++;
+      if(apariciones == 2) return false;
+    }
+  }
+  return true;
+}
+
+bool validate_sector(sudoku_t *self, int row_ini, int column_ini, char value){
+  int row_offset = row_ini / 3;
+  int column_offset = column_ini /3;
+  int apariciones = 0;
+  for(int row = 0; row < 3; row++){
+    for(int column = 0; column < 3; column++) {
+      if(board_get(self->board, row + row_offset, column + column_offset) == value){
+        apariciones++;
+        if(apariciones == 2) return false;
+      }
+    }
+  }
+  return true;
+}
+
+bool sudoku_validate(sudoku_t *self) {
+  list_iter_reset(self->plays);
+  play_t *play = list_iter_next(self->plays);
+  for (; play != NULL; play = list_iter_next(self->plays)) {
+    printf("VALIDATE 1");
+    char value = board_get(self->board, play->row, play->column);
+    bool column = validate_column(self, play->column, value);
+    bool row = validate_column(self, play->row, value);
+    bool sector = validate_column(self, play->row, value);
+    if(!row || !column || !sector){
+      return false;
+    }
+  }
+  return true;
+}
+
+
 
 int sudoku_reset(sudoku_t *self) {
   board_reset(self->board);

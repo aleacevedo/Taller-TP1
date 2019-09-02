@@ -3,6 +3,8 @@
 
 #include "board.h"
 #include "list.h"
+#include <stdbool.h>
+
 
 #define SECTOR_DIVISOR "U===========U===========U===========U\n"
 #define ROW_DIVISOR "U---+---+---U---+---+---U---+---+---U\n"
@@ -17,7 +19,6 @@ typedef struct {
 typedef struct {
   int row;
   int column;
-  char value;
 } play_t;
 
 int sudoku_init(sudoku_t *self);
@@ -28,7 +29,7 @@ int sudoku_check_value(char value);
 
 char *sudoku_show(sudoku_t *self, char *boardRepresentation);
 
-int sudoku_validate(sudoku_t *self);
+bool sudoku_validate(sudoku_t *self);
 
 int sudoku_reset(sudoku_t *self);
 
