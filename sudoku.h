@@ -7,12 +7,14 @@
 
 
 #define SECTOR_DIVISOR "U===========U===========U===========U\n"
+#define DIVISOR_LEN 39
 #define ROW_DIVISOR "U---+---+---U---+---+---U---+---+---U\n"
 #define BOARD_REPRESENTATION_LEN 722
 #define ROW_REPRESENTATION "U %c | %c | %c "
+#define ROW_REPRESENTATION_LEN 13
 
 typedef struct {
-  board_t *board;
+  board_t board;
   list_t *plays;
 } sudoku_t;
 
