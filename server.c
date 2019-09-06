@@ -1,4 +1,4 @@
-
+#define _POSIX_C_SOURCE 200112L
 #include "server.h"
 #include <stdio.h>
 #include <stdlib.h>
