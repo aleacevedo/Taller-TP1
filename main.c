@@ -3,7 +3,7 @@
 #include "client.h"
 #include "server.h"
 
-int main(int argc, const char* argv[]) {
+int main(int argc, const char *argv[]) {
   if (argc < 2) {
     printf("Modo no soportado, el primer parámetro debe ser server o client\n​");
     return -1;
@@ -11,8 +11,7 @@ int main(int argc, const char* argv[]) {
   if (strcmp(argv[1], "server") == 0) {
     if (argc == 3) {
       printf("Server\n");
-      server_init(argv[2]);
-      return 0;
+      return server_init(argv[2]);
     }
     printf("Uso: ./tp client <host> <puerto>\n");
     return 1;
