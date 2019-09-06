@@ -1,3 +1,5 @@
+#define _POSIX_C_SOURCE 200112L
+
 #ifndef _SOCKET_H
 #define _SOCKET_H
 
