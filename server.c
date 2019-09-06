@@ -12,7 +12,7 @@ int server_init(const char *service) {
   if (socket_accept(&socket) == 1) return 1;
   char cadena[20];
   int recived = socket_receive(&socket, cadena, 20);
-  if (recived > 0){
+  if (recived > 0) {
     printf("RECIBI: %s\n", cadena);
     socket_uninit(&socket);
     return 0;

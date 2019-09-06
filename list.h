@@ -20,9 +20,9 @@ void list_init(list_t *self);
 
 void list_append(list_t *self, void *value);
 
-void* list_obtain(list_t *self, size_t index);
+void *list_obtain(list_t *self, size_t index);
 
-void* list_iter_next(list_t *self);
+void *list_iter_next(list_t *self);
 
 void list_iter_reset(list_t *self);
 

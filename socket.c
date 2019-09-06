@@ -10,8 +10,6 @@
 #include <sys/socket.h>
 #include <unistd.h>
 
-
-
 int socket_init(socket_t *self, const char *host, const char *service) {
   memset(&(self->hints), 0, sizeof(struct addrinfo));
   self->client = -1;
@@ -87,16 +85,16 @@ int socket_receive(socket_t *self, char *buff, int size) {
   return received;
 }
 
-int socket_shutdown_close(int toClose){
+int socket_shutdown_close(int toClose) {
   printf("Closing %i\n", toClose);
   shutdown(toClose, SHUT_RDWR);
   close(toClose);
   return 0;
 }
 
-int socket_uninit(socket_t *self){
-  if(self->client != -1) socket_shutdown_close(self->client);
-  if(self->skt != -1) socket_shutdown_close(self->skt);
+int socket_uninit(socket_t *self) {
+  if (self->client != -1) socket_shutdown_close(self->client);
+  if (self->skt != -1) socket_shutdown_close(self->skt);
   freeaddrinfo(self->ptr);
   return 0;
 }
