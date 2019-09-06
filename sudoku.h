@@ -5,7 +5,6 @@
 #include "list.h"
 #include <stdbool.h>
 
-
 #define SECTOR_DIVISOR "U===========U===========U===========U\n"
 #define DIVISOR_LEN 39
 #define ROW_DIVISOR "U---+---+---U---+---+---U---+---+---U\n"
