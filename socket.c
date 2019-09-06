@@ -97,5 +97,6 @@ int socket_shutdown_close(int toClose){
 int socket_uninit(socket_t *self){
   if(self->client != -1) socket_shutdown_close(self->client);
   if(self->skt != -1) socket_shutdown_close(self->skt);
+  freeaddrinfo(self->ptr);
   return 0;
 }
