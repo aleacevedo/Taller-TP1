@@ -1,5 +1,15 @@
 #include <errno.h>
 #include "socket.h"
+#define _POSIX_C_SOURCE 200112L
+
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <sys/types.h>
+#include <sys/socket.h>
+#include <unistd.h>
+
+
 
 int socket_init(socket_t *self, const char *host, const char *service) {
   memset(&(self->hints), 0, sizeof(struct addrinfo));
