@@ -5,7 +5,7 @@
 
 int main(int argc, const char *argv[]) {
   if (argc < 2) {
-    printf("Modo no soportado, el primer parámetro debe ser server o client\n​");
+    printf("Modo no soportado, el primer parámetro debe ser server o connection\n​");
     return -1;
   }
   if (strcmp(argv[1], "server") == 0) {
@@ -13,7 +13,7 @@ int main(int argc, const char *argv[]) {
       printf("Server\n");
       return server_init(argv[2]);
     }
-    printf("Uso: ./tp client <host> <puerto>\n");
+    printf("Uso: ./tp connection <host> <puerto>\n");
     return 1;
   }
   if (strcmp(argv[1], "client") == 0) {
