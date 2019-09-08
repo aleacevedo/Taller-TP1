@@ -12,7 +12,9 @@ int main(int argc, const char *argv[]) {
   if (strcmp(argv[1], "server") == 0) {
     if (argc == 3) {
       printf("Server\n");
-      return server_init(argv[2]);
+      server_t server;
+      if(server_init(& server,argv[2])) return 1;
+      return server_run(& server);
     }
     printf("Uso: ./tp connection <host> <puerto>\n");
     return 1;
@@ -20,8 +22,9 @@ int main(int argc, const char *argv[]) {
   if (strcmp(argv[1], "client") == 0) {
     if (argc == 4) {
       printf("Cliente\n");
-      client_init(argv[2], argv[3]);
-      return 0;
+      client_t client;
+      client_init(&client, argv[2], argv[3]);
+      return client_run(&client);
     }
     printf("Uso: ./tp client <host> <puerto>\n");
     return 1;
