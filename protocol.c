@@ -20,7 +20,7 @@ int protocol_receive_from_server(protocol_t *self) {
   int msg_len_int;
   int received = socket_receive(&(self->socket), msg_len, 4);
   if (received <= 0) return received;
-  msg_len_int = ntohl(*((int*) msg_len)) + 1;
+  msg_len_int = ntohl(*((int*) msg_len));
   self->last_received = malloc(msg_len_int * sizeof(char));
   return socket_receive(&(self->socket), self->last_received, msg_len_int);
 }
