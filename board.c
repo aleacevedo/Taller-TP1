@@ -6,28 +6,24 @@
 
 int board_init(board_t *self) {
   FILE *fileBoard = fopen(PATH_BOARD, "r");
-  int row = 0;
-  char line[LEN_STRING + 2];
+  char line[LEN_STRING];
+  int file_ended = 0;
   if (fileBoard == NULL) {
     printf("Error initializing board: %s\n", strerror(errno));
     return 1;
   }
-  while (fgets(line, LEN_STRING + 1, fileBoard) != NULL) {
-    if (!(row < BOARD_SIZE)) {
-      printf(" Error initializing board: The file is bigger than 9 rows");
-      fclose(fileBoard);
-      return 1;
-    }
+  for (int row = 0; row < BOARD_SIZE; row++) {
+    if (fgets(line, LEN_STRING, fileBoard) == NULL)
+      file_ended = 1;
     for (int column = 0; column < BOARD_SIZE; column++) {
-      if (line[column] == '0') {
+      if (line[column*2] == '0' || file_ended) {
         self->cells[row][column].value = ' ';
         self->cells[row][column].ini = 0;
         continue;
       }
-      self->cells[row][column].value = line[column];
+      self->cells[row][column].value = line[column*2];
       self->cells[row][column].ini = 1;
     }
-    row++;
   }
   return fclose(fileBoard);
 }

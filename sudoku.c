@@ -65,41 +65,43 @@ int sudoku_check_value(char value) {
   return value_int > 0 && value_int < 10;
 }
 
-bool validate_row(sudoku_t *self, int column, char value) {
+int validate_row(sudoku_t *self, int column, char value) {
   int apariciones = 0;
   for (int row = 0; row < BOARD_SIZE; row++) {
     if (board_get(&(self->board), row, column) == value) {
       apariciones++;
-      if (apariciones == 2) return false;
+      if (apariciones == 2) return 0;
     }
   }
-  return true;
+  return 1;
 }
 
-bool validate_column(sudoku_t *self, int row, char value) {
+int validate_column(sudoku_t *self, int row, char value) {
   int apariciones = 0;
   for (int column = 0; column < BOARD_SIZE; column++) {
     if (board_get(&(self->board), row, column) == value) {
       apariciones++;
-      if (apariciones == 2) return false;
+      if (apariciones == 2) return 0;
     }
   }
-  return true;
+  return 1;
 }
 
-bool validate_sector(sudoku_t *self, int row_ini, int column_ini, char value) {
+int validate_sector(sudoku_t *self, int row_ini, int column_ini, char value) {
   int row_offset = row_ini / 3;
+  row_offset = row_offset * 3;
   int column_offset = column_ini / 3;
+  column_offset = column_offset * 3;
   int apariciones = 0;
   for (int row = 0; row < 3; row++) {
     for (int column = 0; column < 3; column++) {
       if (board_get(&(self->board), row + row_offset, column + column_offset) == value) {
         apariciones++;
-        if (apariciones == 2) return false;
+        if (apariciones == 2) return 0;
       }
     }
   }
-  return true;
+  return 1;
 }
 
 int sudoku_validate(sudoku_t *self) {
@@ -107,9 +109,9 @@ int sudoku_validate(sudoku_t *self) {
   play_t *play = list_iter_next(self->plays);
   for (; play != NULL; play = list_iter_next(self->plays)) {
     char value = board_get(&(self->board), play->row, play->column);
-    bool column = validate_column(self, play->row, value);
-    bool row = validate_row(self, play->column, value);
-    bool sector = validate_sector(self, play->row, play->column, value);
+    int column = validate_column(self, play->row, value);
+    int row = validate_row(self, play->column, value);
+    int sector = validate_sector(self, play->row, play->column, value);
     if (!row || !column || !sector) {
       return 0;
     }

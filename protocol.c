@@ -17,10 +17,12 @@ int protocol_init(protocol_t *self, const char *host, const char *service) {
 int protocol_receive_from_server(protocol_t *self) {
   if (self->last_received != NULL) free(self->last_received);
   char msg_len[4];
-  int msg_len_int;
+  unsigned int *msg_len_;
+  unsigned int msg_len_int;
   int received = socket_receive(&(self->socket), msg_len, 4);
   if (received <= 0) return received;
-  msg_len_int = ntohl(*((int *) msg_len));
+  msg_len_ = (unsigned int *) msg_len;
+  msg_len_int = ntohl(*msg_len_);
   self->last_received = malloc(msg_len_int * sizeof(char));
   return socket_receive(&(self->socket), self->last_received, msg_len_int);
 }

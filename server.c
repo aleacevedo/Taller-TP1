@@ -6,8 +6,8 @@
 #include "socket.h"
 
 int server_init(server_t *self, const char *service) {
-  if (protocol_init(&(self->protocol), NULL, service)) return 1;
   if (sudoku_init(&(self->sudoku))) return 1;
+  if (protocol_init(&(self->protocol), NULL, service)) return 1;
   return 0;
 }
 
@@ -26,7 +26,7 @@ int server_put(server_t *self) {
   char value = self->protocol.last_received[3];
   if (sudoku_set(&(self->sudoku), row, column, value)) {
     return protocol_send_from_server(&(self->protocol), "La celda indicada no es modificable\n\0", size);
-  };
+  }
   return server_get(self);
 }
 

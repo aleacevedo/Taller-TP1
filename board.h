@@ -2,7 +2,7 @@
 #define _BOARD_H
 
 #define PATH_BOARD "./board.txt"
-#define LEN_STRING 10
+#define LEN_STRING 20
 #define BOARD_SIZE 9
 
 typedef struct {

@@ -38,7 +38,7 @@ math = si
 ###########################
 
 # Opciones para el compilador C/C++ para tratamiento de errores y warnings.
-CFLAGS = -Wall -Werror -pedantic -pedantic-errors
+CFLAGS = -Wall -Werror -pedantic -pedantic-errors -Werror=strict-aliasing
 
 # Para optimizar el binario resultante lo mejor posible
 CFLAGS += -O3

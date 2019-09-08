@@ -15,7 +15,7 @@ int socket_getaddrinfo(socket_t *self, const char *host, const char *service) {
   if ((resAddr = getaddrinfo(host, service, &(self->hints), &(self->ptr))) != 0) {
     printf("Error getaddrinfo: %s \n", gai_strerror(resAddr));
     return 1;
-  };
+  }
   return 0;
 }
 
@@ -153,7 +153,6 @@ int socket_send(socket_t *self, char *buff, int size) {
 }
 
 int socket_shutdown_close(int toClose) {
-  printf("Closing %i\n", toClose);
   shutdown(toClose, SHUT_RDWR);
   close(toClose);
   return 0;
