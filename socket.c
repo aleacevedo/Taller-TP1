@@ -47,6 +47,7 @@ int socket_init(socket_t *self, const char *host, const char *service) {
   memset(&(self->hints), 0, sizeof(struct addrinfo));
   self->connection = -1;
   self->skt = -1;
+  self->ptr = NULL;
   self->hints.ai_family = AF_INET;
   self->hints.ai_socktype = SOCK_STREAM;
   if (host == NULL) {
@@ -107,6 +108,8 @@ int socket_connect(socket_t *self) {
   if(self->isServer) return 1;
   if(connect(self->skt, self->ptr->ai_addr, self->ptr->ai_addrlen) == -1){
     printf("Error connecting: %s \n", strerror(errno));
+    close(self->skt);
+    freeaddrinfo(self->ptr);
     return 1;
   }
   self->connection = self->skt;
@@ -159,6 +162,6 @@ int socket_shutdown_close(int toClose) {
 int socket_uninit(socket_t *self) {
   if (self->connection != -1 && self->isServer) socket_shutdown_close(self->connection);
   if (self->skt != -1) socket_shutdown_close(self->skt);
-  freeaddrinfo(self->ptr);
+  if (self->ptr != NULL) freeaddrinfo(self->ptr);
   return 0;
 }
