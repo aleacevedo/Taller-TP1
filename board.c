@@ -8,7 +8,7 @@ int board_init(board_t *self) {
   FILE *fileBoard = fopen(PATH_BOARD, "r");
   int row = 0;
   char line[LEN_STRING + 2];
-  if (fileBoard == NULL){
+  if (fileBoard == NULL) {
     printf("Error initializing board: %s\n", strerror(errno));
     return 1;
   }
@@ -46,10 +46,10 @@ char board_get(board_t *self, int row, int column) {
 }
 
 int board_reset(board_t *self) {
-  for(int row = 0; row < BOARD_SIZE; row++ ) {
-    for(int column = 0; column < BOARD_SIZE; column++) {
+  for (int row = 0; row < BOARD_SIZE; row++) {
+    for (int column = 0; column < BOARD_SIZE; column++) {
       if (!board_is_ini(self, row, column)) {
-      board_set(self, row, column, ' ');
+        board_set(self, row, column, ' ');
       }
     }
   }

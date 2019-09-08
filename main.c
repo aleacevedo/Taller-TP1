@@ -13,8 +13,8 @@ int main(int argc, const char *argv[]) {
     if (argc == 3) {
       printf("Server\n");
       server_t server;
-      if(server_init(& server,argv[2])) return 1;
-      return server_run(& server);
+      if (server_init(&server, argv[2])) return 1;
+      return server_run(&server);
     }
     printf("Uso: ./tp connection <host> <puerto>\n");
     return 1;

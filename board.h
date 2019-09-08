@@ -14,7 +14,6 @@ typedef struct {
   cell_t cells[9][9];
 } board_t;
 
-
 int board_init(board_t *self);
 
 int board_set(board_t *self, int row, int column, char value);

@@ -32,11 +32,11 @@ int server_put(server_t *self) {
 
 int server_verify(server_t *self) {
   int size;
-  if(sudoku_validate(&(self->sudoku))){
+  if (sudoku_validate(&(self->sudoku))) {
     size = 4;
     if (protocol_send_from_server(&(self->protocol), "OK\n\0", size) <= 0) return 1;
     return 0;
-  }else{
+  } else {
     size = 7;
     if (protocol_send_from_server(&(self->protocol), "ERROR\n\0", size) <= 0) return 1;
     return 0;
@@ -65,13 +65,13 @@ int server_run(server_t *self) {
     received = protocol_receive_from_client(&(self->protocol));
   }
   server_uninit(self);
-  if(received == 0){
+  if (received == 0) {
     return 0;
   }
   return 1;
 }
 
-int server_uninit(server_t *self){
+int server_uninit(server_t *self) {
   protocol_uninit(&(self->protocol));
   sudoku_uninit(&(self->sudoku));
   return 0;

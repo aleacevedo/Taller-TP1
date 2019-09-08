@@ -70,7 +70,7 @@ int socket_init(socket_t *self, const char *host, const char *service) {
   return 0;
 }
 
-int socket_is_server(socket_t *self){
+int socket_is_server(socket_t *self) {
   return self->isServer;
 }
 
@@ -105,8 +105,8 @@ int socket_accept(socket_t *self) {
 }
 
 int socket_connect(socket_t *self) {
-  if(self->isServer) return 1;
-  if(connect(self->skt, self->ptr->ai_addr, self->ptr->ai_addrlen) == -1){
+  if (self->isServer) return 1;
+  if (connect(self->skt, self->ptr->ai_addr, self->ptr->ai_addrlen) == -1) {
     printf("Error connecting: %s \n", strerror(errno));
     close(self->skt);
     freeaddrinfo(self->ptr);

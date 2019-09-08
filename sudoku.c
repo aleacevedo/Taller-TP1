@@ -6,7 +6,7 @@
 #include "board.h"
 
 int sudoku_init(sudoku_t *self) {
-  if(board_init(&(self->board))) return 1;
+  if (board_init(&(self->board))) return 1;
   self->plays = malloc(sizeof(list_t));
   list_init(self->plays);
   return 0;

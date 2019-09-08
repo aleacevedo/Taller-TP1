@@ -3,7 +3,7 @@
 
 #include "sudoku.h"
 #include "protocol.h"
-typedef  struct {
+typedef struct {
   sudoku_t sudoku;
   protocol_t protocol;
 } server_t;
