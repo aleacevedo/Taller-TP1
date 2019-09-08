@@ -6,7 +6,7 @@
 #include "board.h"
 
 int sudoku_init(sudoku_t *self) {
-  board_init(&(self->board));
+  if(board_init(&(self->board))) return 1;
   self->plays = malloc(sizeof(list_t));
   list_init(self->plays);
   return 0;
@@ -45,8 +45,7 @@ char *sudoku_show(sudoku_t *self, char *boardRepresentation) {
 
 int sudoku_set(sudoku_t *self, char row, char column, char value) {
   int row_int = (int) (row) - '0' - 1;
-  printf("%i\n", row_int);
-  int column_int = (int) (row) - '0' - 1;
+  int column_int = (int) (column) - '0' - 1;
   if (!sudoku_check_value(row) || !sudoku_check_value(column)) {
     return 1;
   }
@@ -103,7 +102,7 @@ bool validate_sector(sudoku_t *self, int row_ini, int column_ini, char value) {
   return true;
 }
 
-bool sudoku_validate(sudoku_t *self) {
+int sudoku_validate(sudoku_t *self) {
   list_iter_reset(self->plays);
   play_t *play = list_iter_next(self->plays);
   for (; play != NULL; play = list_iter_next(self->plays)) {
@@ -112,23 +111,30 @@ bool sudoku_validate(sudoku_t *self) {
     bool row = validate_row(self, play->column, value);
     bool sector = validate_sector(self, play->row, play->column, value);
     if (!row || !column || !sector) {
-      return false;
+      return 0;
     }
   }
-  return true;
+  return 1;
 }
 
-int sudoku_reset(sudoku_t *self) {
-  board_reset(&(self->board));
-  return 0;
-}
-
-void sudoku_uninit(sudoku_t *self) {
+int sudoku_reset_plays(sudoku_t *self) {
   list_iter_reset(self->plays);
   play_t *play = list_iter_next(self->plays);
   for (; play != NULL; play = list_iter_next(self->plays)) {
     free(play);
   }
   list_uninit(self->plays);
+  list_init(self->plays);
+  return 0;
+}
+
+int sudoku_reset(sudoku_t *self) {
+  board_reset(&(self->board));
+  sudoku_reset_plays(self);
+  return 0;
+}
+
+void sudoku_uninit(sudoku_t *self) {
+  sudoku_reset_plays(self);
   free(self->plays);
 }

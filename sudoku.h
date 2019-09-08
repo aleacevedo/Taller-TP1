@@ -8,7 +8,7 @@
 #define SECTOR_DIVISOR "U===========U===========U===========U\n"
 #define DIVISOR_LEN 39
 #define ROW_DIVISOR "U---+---+---U---+---+---U---+---+---U\n"
-#define BOARD_REPRESENTATION_LEN 722
+#define BOARD_REPRESENTATION_LEN 723
 #define ROW_REPRESENTATION "U %c | %c | %c "
 #define ROW_REPRESENTATION_LEN 13
 
@@ -30,7 +30,7 @@ int sudoku_check_value(char value);
 
 char *sudoku_show(sudoku_t *self, char *boardRepresentation);
 
-bool sudoku_validate(sudoku_t *self);
+int sudoku_validate(sudoku_t *self);
 
 int sudoku_reset(sudoku_t *self);
 
