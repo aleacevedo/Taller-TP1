@@ -1,17 +1,22 @@
 #include "board.h"
 
 #include <stdio.h>
+#include <string.h>
+#include <errno.h>
 
 int board_init(board_t *self) {
   FILE *fileBoard = fopen(PATH_BOARD, "r");
   int row = 0;
   char line[LEN_STRING + 2];
-  if (fileBoard == NULL)
-    return -2;
+  if (fileBoard == NULL){
+    printf("Error initializing board: %s\n", strerror(errno));
+    return 1;
+  }
   while (fgets(line, LEN_STRING + 1, fileBoard) != NULL) {
     if (!(row < BOARD_SIZE)) {
+      printf(" Error initializing board: The file is bigger than 9 rows");
       fclose(fileBoard);
-      return -1; // El archivo tiene mas de 9 filas
+      return 1;
     }
     for (int column = 0; column < BOARD_SIZE; column++) {
       if (line[column] == '0') {
