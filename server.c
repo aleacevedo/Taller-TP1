@@ -20,12 +20,12 @@ int server_get(server_t *self) {
 }
 
 int server_put(server_t *self) {
-  int size = 36;
+  int size = 37;
   char row = self->protocol.last_received[1];
   char column = self->protocol.last_received[2];
   char value = self->protocol.last_received[3];
   if (sudoku_set(&(self->sudoku), row, column, value)) {
-    return protocol_send_from_server(&(self->protocol), "La celda indicada no es modificable\n", size);
+    return protocol_send_from_server(&(self->protocol), "La celda indicada no es modificable\n\0", size);
   };
   return server_get(self);
 }
@@ -33,12 +33,12 @@ int server_put(server_t *self) {
 int server_verify(server_t *self) {
   int size;
   if(sudoku_validate(&(self->sudoku))){
-    size = 3;
-    if (protocol_send_from_server(&(self->protocol), "OK\n", size) <= 0) return 1;
+    size = 4;
+    if (protocol_send_from_server(&(self->protocol), "OK\n\0", size) <= 0) return 1;
     return 0;
   }else{
-    size = 6;
-    if (protocol_send_from_server(&(self->protocol), "ERROR\n", size) <= 0) return 1;
+    size = 7;
+    if (protocol_send_from_server(&(self->protocol), "ERROR\n\0", size) <= 0) return 1;
     return 0;
   }
 }
