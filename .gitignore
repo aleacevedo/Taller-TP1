@@ -53,3 +53,7 @@ Mkfile.old
 dkms.conf
 
 *.txt
+Test*/
+*.zip
+.idea/
+cmake*
