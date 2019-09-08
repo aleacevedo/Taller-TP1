@@ -8,6 +8,10 @@ typedef  struct {
   protocol_t protocol;
 } server_t;
 
-int server_init(const char *service);
+int server_init(server_t *self, const char *service);
+
+int server_run(server_t *self);
+
+int server_uninit(server_t *self);
 
 #endif
