@@ -45,7 +45,7 @@ int client_execute_action(client_t *self, char* command){
 int client_run(client_t *self) {
   char command[14];
   while(1){
-    fgets(command, 14, stdin);
+    int i = fgets(command, 14, stdin);
     if(client_execute_action(self, command)){
       client_uninit(self);
       return 0;
