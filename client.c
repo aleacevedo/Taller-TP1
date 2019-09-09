@@ -1,7 +1,10 @@
+
 #define _POSIX_C_SOURCE 200112L
 #include "client.h"
-#include "protocol.h"
 #include <stdio.h>
+#include "protocol.h"
+#include "message.h"
+
 
 int client_init(client_t *self, const char *host, const char *service) {
   return protocol_init(&(self->protocol), host, service);
@@ -9,15 +12,15 @@ int client_init(client_t *self, const char *host, const char *service) {
 
 int check_range(int row, int column, int value) {
   if (value < 1 || 9 < value) {
-    fprintf(stderr, "Error en el valor ingresado. Rango soportado: [1,9]\n");
+    fprintf(stderr, ERR_VALUE);
     return 0;
   }
   if (row < 1 || 9 < row) {
-    fprintf(stderr, "Error en los índices. Rango soportado: [1,9]\n");
+    fprintf(stderr, ERR_INDEX);
     return 0;
   }
   if (column < 1 || 9 < column) {
-    fprintf(stderr, "Error en los índices. Rango soportado: [1,9]\n");
+    fprintf(stderr, ERR_INDEX);
     return 0;
   }
   return 1;

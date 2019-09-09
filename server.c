@@ -4,6 +4,7 @@
 #include <stdlib.h>
 #include "sudoku.h"
 #include "socket.h"
+#include "message.h"
 
 int server_init(server_t *self, const char *service) {
   if (sudoku_init(&(self->sudoku))) return 1;
@@ -15,7 +16,8 @@ int server_get(server_t *self) {
   char board[BOARD_REPRESENTATION_LEN];
   int board_size = BOARD_REPRESENTATION_LEN;
   sudoku_show(&(self->sudoku), board);
-  if (protocol_send_from_server(&(self->protocol), board, board_size) <= 0) return 1;
+  if (protocol_send_from_server(&(self->protocol), board, board_size) <= 0)
+    return 1;
   return 0;
 }
 
@@ -25,7 +27,7 @@ int server_put(server_t *self) {
   char column = self->protocol.last_received[2];
   char value = self->protocol.last_received[3];
   if (sudoku_set(&(self->sudoku), row, column, value)) {
-    return protocol_send_from_server(&(self->protocol), "La celda indicada no es modificable\n\0", size);
+    return protocol_send_from_server(&(self->protocol), ERR_INIT_VAL, size);
   }
   return server_get(self);
 }
@@ -34,11 +36,13 @@ int server_verify(server_t *self) {
   int size;
   if (sudoku_validate(&(self->sudoku))) {
     size = 4;
-    if (protocol_send_from_server(&(self->protocol), "OK\n\0", size) <= 0) return 1;
+    if (protocol_send_from_server(&(self->protocol), VERIFY_OK, size) <= 0)
+      return 1;
     return 0;
   } else {
     size = 7;
-    if (protocol_send_from_server(&(self->protocol), "ERROR\n\0", size) <= 0) return 1;
+    if (protocol_send_from_server(&(self->protocol), VERIFY_ERR, size) <= 0)
+      return 1;
     return 0;
   }
 }

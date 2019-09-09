@@ -18,10 +18,15 @@ void sudoku_generate_row(sudoku_t *self, char *row_representation, int row) {
     char valor0 = board_get(&(self->board), row, column);
     char valor1 = board_get(&(self->board), row, column + 1);
     char valor2 = board_get(&(self->board), row, column + 2);
-    snprintf(row_representation + offset, DIVISOR_LEN - offset, ROW_REPRESENTATION, valor0, valor1, valor2);
+    snprintf(row_representation + offset,
+      DIVISOR_LEN - offset,
+      ROW_REPRESENTATION, valor0,
+      valor1, valor2);
     offset += (ROW_REPRESENTATION_LEN - 1);
   }
-  snprintf(row_representation + strlen(row_representation), DIVISOR_LEN - strlen(row_representation), "%s", "U\n");
+  snprintf(row_representation+ strlen(row_representation),
+    DIVISOR_LEN - strlen(row_representation),
+    "%s", "U\n");
 }
 
 char *sudoku_show(sudoku_t *self, char *boardRepresentation) {
@@ -29,17 +34,25 @@ char *sudoku_show(sudoku_t *self, char *boardRepresentation) {
   for (int row = 0; row < 9; row++) {
     char line_representation[39] = "\0";
     if (row % 3 == 0) {
-      snprintf(boardRepresentation + offset, BOARD_REPRESENTATION_LEN - offset, "%s", SECTOR_DIVISOR);
+      snprintf(boardRepresentation + offset,
+        BOARD_REPRESENTATION_LEN - offset, "%s",
+        SECTOR_DIVISOR);
       offset += (DIVISOR_LEN - 1);
     } else {
-      snprintf(boardRepresentation + offset, BOARD_REPRESENTATION_LEN - offset, "%s", ROW_DIVISOR);
+      snprintf(boardRepresentation + offset,
+        BOARD_REPRESENTATION_LEN - offset,
+        "%s", ROW_DIVISOR);
       offset += (DIVISOR_LEN - 1);
     }
     sudoku_generate_row(self, line_representation, row);
-    snprintf(boardRepresentation + offset, BOARD_REPRESENTATION_LEN - offset, "%s", line_representation);
+    snprintf(boardRepresentation + offset,
+      BOARD_REPRESENTATION_LEN - offset,
+      "%s", line_representation);
     offset += (DIVISOR_LEN - 1);
   }
-  snprintf(boardRepresentation + offset, BOARD_REPRESENTATION_LEN - offset, "%s", SECTOR_DIVISOR);
+  snprintf(boardRepresentation + offset,
+    BOARD_REPRESENTATION_LEN - offset,
+    "%s", SECTOR_DIVISOR);
   return boardRepresentation;
 }
 
@@ -49,7 +62,8 @@ int sudoku_set(sudoku_t *self, char row, char column, char value) {
   if (!sudoku_check_value(row) || !sudoku_check_value(column)) {
     return 1;
   }
-  if (!board_is_ini(&(self->board), row_int, column_int) && sudoku_check_value(value)) {
+  if (!board_is_ini(&(self->board), row_int, column_int)
+      && sudoku_check_value(value)) {
     board_set(&(self->board), row_int, column_int, value);
     play_t *play = malloc(sizeof(play_t));
     play->column = column_int;
@@ -95,7 +109,8 @@ int validate_sector(sudoku_t *self, int row_ini, int column_ini, char value) {
   int apariciones = 0;
   for (int row = 0; row < 3; row++) {
     for (int column = 0; column < 3; column++) {
-      if (board_get(&(self->board), row + row_offset, column + column_offset) == value) {
+      if (board_get(&(self->board),
+          row + row_offset, column + column_offset) == value) {
         apariciones++;
         if (apariciones == 2) return 0;
       }
