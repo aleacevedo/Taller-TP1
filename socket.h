@@ -26,8 +26,6 @@ int socket_receive(socket_t *self, char *buff, int size);
 
 int socket_send(socket_t *self, char *buff, int size);
 
-int socket_shutdown_close(int toClose);
-
 int socket_uninit(socket_t *self);
 
 #endif

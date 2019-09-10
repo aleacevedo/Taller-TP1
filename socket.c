@@ -10,7 +10,7 @@
 #include <sys/socket.h>
 #include <unistd.h>
 
-int socket_getaddrinfo(socket_t *self, const char *host, const char *service) {
+static int _getaddrinfo(socket_t *self, const char *host, const char *service) {
   int resAddr;
   if ((resAddr = getaddrinfo(host, service,
                     &(self->hints),
@@ -21,7 +21,7 @@ int socket_getaddrinfo(socket_t *self, const char *host, const char *service) {
   return 0;
 }
 
-int socket_create_server(socket_t *self) {
+static int _create_server(socket_t *self) {
   self->skt = socket(self->ptr->ai_family,
                 self->ptr->ai_socktype,
                 self->ptr->ai_protocol);
@@ -33,7 +33,7 @@ int socket_create_server(socket_t *self) {
   return 0;
 }
 
-int socket_create_client(socket_t *self) {
+static int _create_client(socket_t *self) {
   struct addrinfo *directions = self->ptr;
   for (; directions != NULL; directions = directions->ai_next) {
     self->skt = socket(self->ptr->ai_family,
@@ -59,16 +59,16 @@ int socket_init(socket_t *self, const char *host, const char *service) {
   if (host == NULL) {
     self->hints.ai_flags = AI_PASSIVE;
     self->isServer = 1;
-    if (socket_getaddrinfo(self, host, service)) return 1;
-    if (socket_create_server(self)) {
+    if (_getaddrinfo(self, host, service)) return 1;
+    if (_create_server(self)) {
       freeaddrinfo(self->ptr);
       return 1;
     }
   } else {
     self->hints.ai_flags = 0;
     self->isServer = 0;
-    if (socket_getaddrinfo(self, host, service)) return 1;
-    if (socket_create_client(self)) {
+    if (_getaddrinfo(self, host, service)) return 1;
+    if (_create_client(self)) {
       freeaddrinfo(self->ptr);
       return 1;
     }
@@ -157,7 +157,7 @@ int socket_send(socket_t *self, char *buff, int size) {
   return sent;
 }
 
-int socket_shutdown_close(int toClose) {
+static int _shutdown_close(int toClose) {
   shutdown(toClose, SHUT_RDWR);
   close(toClose);
   return 0;
@@ -165,8 +165,8 @@ int socket_shutdown_close(int toClose) {
 
 int socket_uninit(socket_t *self) {
   if (self->connection != -1 && self->isServer)
-    socket_shutdown_close(self->connection);
-  if (self->skt != -1) socket_shutdown_close(self->skt);
+    _shutdown_close(self->connection);
+  if (self->skt != -1) _shutdown_close(self->skt);
   if (self->ptr != NULL) freeaddrinfo(self->ptr);
   return 0;
 }

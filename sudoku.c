@@ -12,7 +12,7 @@ int sudoku_init(sudoku_t *self) {
   return 0;
 }
 
-void sudoku_generate_row(sudoku_t *self, char *row_representation, int row) {
+static void _generate_row(sudoku_t *self, char *row_representation, int row) {
   int offset = 0;
   for (int column = 0; column < 9; column = column + 3) {
     char valor0 = board_get(&(self->board), row, column);
@@ -44,7 +44,7 @@ char *sudoku_show(sudoku_t *self, char *boardRepresentation) {
         "%s", ROW_DIVISOR);
       offset += (DIVISOR_LEN - 1);
     }
-    sudoku_generate_row(self, line_representation, row);
+    _generate_row(self, line_representation, row);
     snprintf(boardRepresentation + offset,
       BOARD_REPRESENTATION_LEN - offset,
       "%s", line_representation);
@@ -56,14 +56,11 @@ char *sudoku_show(sudoku_t *self, char *boardRepresentation) {
   return boardRepresentation;
 }
 
+
 int sudoku_set(sudoku_t *self, char row, char column, char value) {
   int row_int = (int) (row) - '0' - 1;
   int column_int = (int) (column) - '0' - 1;
-  if (!sudoku_check_value(row) || !sudoku_check_value(column)) {
-    return 1;
-  }
-  if (!board_is_ini(&(self->board), row_int, column_int)
-      && sudoku_check_value(value)) {
+  if (!board_is_ini(&(self->board), row_int, column_int)) {
     board_set(&(self->board), row_int, column_int, value);
     play_t *play = malloc(sizeof(play_t));
     play->column = column_int;
@@ -74,12 +71,7 @@ int sudoku_set(sudoku_t *self, char row, char column, char value) {
   return 1;
 }
 
-int sudoku_check_value(char value) {
-  int value_int = (int) (value) - '0';
-  return value_int > 0 && value_int < 10;
-}
-
-int validate_row(sudoku_t *self, int column, char value) {
+static int _validate_row(sudoku_t *self, int column, char value) {
   int apariciones = 0;
   for (int row = 0; row < BOARD_SIZE; row++) {
     if (board_get(&(self->board), row, column) == value) {
@@ -90,7 +82,7 @@ int validate_row(sudoku_t *self, int column, char value) {
   return 1;
 }
 
-int validate_column(sudoku_t *self, int row, char value) {
+static int _validate_column(sudoku_t *self, int row, char value) {
   int apariciones = 0;
   for (int column = 0; column < BOARD_SIZE; column++) {
     if (board_get(&(self->board), row, column) == value) {
@@ -101,7 +93,10 @@ int validate_column(sudoku_t *self, int row, char value) {
   return 1;
 }
 
-int validate_sector(sudoku_t *self, int row_ini, int column_ini, char value) {
+static int _validate_sector(sudoku_t *self,
+                            int row_ini,
+                            int column_ini,
+                            char value) {
   int row_offset = row_ini / 3;
   row_offset = row_offset * 3;
   int column_offset = column_ini / 3;
@@ -124,9 +119,9 @@ int sudoku_validate(sudoku_t *self) {
   play_t *play = list_iter_next(self->plays);
   for (; play != NULL; play = list_iter_next(self->plays)) {
     char value = board_get(&(self->board), play->row, play->column);
-    int column = validate_column(self, play->row, value);
-    int row = validate_row(self, play->column, value);
-    int sector = validate_sector(self, play->row, play->column, value);
+    int column = _validate_column(self, play->row, value);
+    int row = _validate_row(self, play->column, value);
+    int sector = _validate_sector(self, play->row, play->column, value);
     if (!row || !column || !sector) {
       return 0;
     }
@@ -134,7 +129,7 @@ int sudoku_validate(sudoku_t *self) {
   return 1;
 }
 
-int sudoku_reset_plays(sudoku_t *self) {
+static int _reset_plays(sudoku_t *self) {
   list_iter_reset(self->plays);
   play_t *play = list_iter_next(self->plays);
   for (; play != NULL; play = list_iter_next(self->plays)) {
@@ -147,11 +142,11 @@ int sudoku_reset_plays(sudoku_t *self) {
 
 int sudoku_reset(sudoku_t *self) {
   board_reset(&(self->board));
-  sudoku_reset_plays(self);
+  _reset_plays(self);
   return 0;
 }
 
 void sudoku_uninit(sudoku_t *self) {
-  sudoku_reset_plays(self);
+  _reset_plays(self);
   free(self->plays);
 }

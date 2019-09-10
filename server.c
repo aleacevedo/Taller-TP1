@@ -12,7 +12,7 @@ int server_init(server_t *self, const char *service) {
   return 0;
 }
 
-int server_get(server_t *self) {
+static int _get(server_t *self) {
   char board[BOARD_REPRESENTATION_LEN];
   int board_size = BOARD_REPRESENTATION_LEN;
   sudoku_show(&(self->sudoku), board);
@@ -21,7 +21,7 @@ int server_get(server_t *self) {
   return 0;
 }
 
-int server_put(server_t *self) {
+static int _put(server_t *self) {
   int size = 37;
   char row = self->protocol.last_received[1];
   char column = self->protocol.last_received[2];
@@ -29,10 +29,10 @@ int server_put(server_t *self) {
   if (sudoku_set(&(self->sudoku), row, column, value)) {
     return protocol_send_from_server(&(self->protocol), ERR_INIT_VAL, size);
   }
-  return server_get(self);
+  return _get(self);
 }
 
-int server_verify(server_t *self) {
+static int _verify(server_t *self) {
   int size;
   if (sudoku_validate(&(self->sudoku))) {
     size = 4;
@@ -47,17 +47,17 @@ int server_verify(server_t *self) {
   }
 }
 
-int server_reset(server_t *self) {
+static int _reset(server_t *self) {
   sudoku_reset(&(self->sudoku));
-  return server_get(self);
+  return _get(self);
 }
 
-int server_execute_action(server_t *self) {
+static int _execute_action_received(server_t *self) {
   switch (self->protocol.last_received[0]) {
-    case 'P':return server_put(self);
-    case 'V':return server_verify(self);
-    case 'R':return server_reset(self);
-    case 'G':return server_get(self);
+    case 'P':return _put(self);
+    case 'V':return _verify(self);
+    case 'R':return _reset(self);
+    case 'G':return _get(self);
   }
   return 0;
 }
@@ -65,7 +65,7 @@ int server_execute_action(server_t *self) {
 int server_run(server_t *self) {
   int received = protocol_receive_from_client(&(self->protocol));
   while (received > 0) {
-    server_execute_action(self);
+    _execute_action_received(self);
     received = protocol_receive_from_client(&(self->protocol));
   }
   server_uninit(self);
